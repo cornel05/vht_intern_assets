@@ -1,0 +1,82 @@
+1. 
+- state là các trạng thái của agent hiện tại hoặc của môi trường xung quanh, có thể kết hợp với action để làm input đầu vào, tùy bài toán.
+- action là hành động mà agent sẽ thực hiện (e.g. up, down, left, right,...).
+- reward là phần thưởng mà agent nhận được khi thực hiện một hành động nào đó (tốt hoặc xấu - penalty).
+- policy là chính sách cho agent, nó sẽ quyết định gặp state này thì nên làm gì.
+
+Ví dụ: nếu agent là robot di chuyển trong mê cung:
+- state: bên trái có tường không, đằng trước có tường không?
+- action: move_forwards, move_backwards, turn_left,...
+- reward: e.g. +100 nếu đến đích, -1 mỗi bước đi, -10 nếu hit wall, -100 nếu rơi trap.
+- policy: e.g. nếu phía trước không có tường thì đi thẳng, nếu có tường thì rẽ phải.
+
+2. Mục tiêu tối ưu của agent là hành động sao cho tổng reward tích lũy trong tương lai là lớn nhất. Nếu agent chỉ tối đa hóa reward tức thời
+thì không đảm bảo được bài toán tối ưu, vì reward trước mắt tốt không chắc reward ở lúc cuối là tốt luôn!
+
+3. discount factor là tầm quan trọng ta đặt cho phần thưởng trong tương lai. gần 0 thì agent có xu hướng tối ưu hóa tương lai gần trước mắt,
+gần 1 thì tối ưu hóa cho đường dài, có tầm nhìn xa hơn.
+
+4. giá trị reward tích lũy trong tương lai cho action a ở state s. dùng để xác định được action dựa theo Q-value.
+
+5. Q_current += learning_rate * (reward + discount_factor * max_Q_next - Q_current).
+khỏi giải thích bởi vì tôi hiểu công thức này rõ lắm.
+
+6. sau khi tới state kế tiếp s', ta giả sử agent sẽ chọn action tốt nhất có thể theo Q hiện tại. cần rất nhiều iterations mới làm được điều này.
+
+7. off-policy: agent có thể hành động bằng một policy để explore - behavior policy (e.g. epsilon-greedy)
+nhưng lại update theo target policy khác (e.g. greedy trong Q-learning với max Q).
+on-policy: agent hành động theo policy nào thì cũng update đúng theo policy đó, như SARSA 
+update theo action thật sự được chọn ở state kế tiếp, tức Q(s', a_next).
+
+8. epsilon-greedy giúp agent có một chút exploration trong quá trình học. nếu epsilon quá cao ngay từ đầu,
+agent sẽ học random trong rất nhiều steps, dẫn đến việc hội tụ lâu hoặc không hội tụ. nếu epsilon quá thấp ngay từ đầu,
+agent sẽ stick vào tính greedy và học theo chính sách mà nó đang cho là tốt nhất hiện có, không explore thêm gì cả.
+
+9. exploration: khám phá, giúp tăng cơ hội tìm ra được policy tốt hơn, exploitation: bảo thủ, không bao giờ chịu thử cái mới, dẫn đến việc
+dù cho quá trình học hội tụ nhưng quá trình học bị "ngu" hoặc hội tụ lâu hơn.
+- cần cân bằng 2 thứ này bởi vì greedy quá sẽ khiến agent học "không khôn ngoan", nếu explore quá thì agent đang "phí thời gian và sức mạnh tính toán"
+mà chẳng học được gì có ích. cân bằng sẽ giúp học được policy tốt hơn và hội tụ nhanh và khôn ngoan hơn.
+
+10. Q-table không thể grow mãi được đối với dữ liệu liên tục, vì nó là cấu trúc dữ liệu dạng tabular, vì thế nếu state/action space quá lớn,
+số dòng sẽ tăng không kiểm soát được, từ đó khiến quá trình học không thể diễn ra hoặc có thể nhưng không hội tụ được.
+
+11. q-table chỉ lưu từng ô riêng biệt cho từng state-action. nếu state là ảnh, tín hiệu liên tục,.... ta không
+thể lập bảng Q đủ lớn.
+NN giúp xấp xỉ hàm Q: Q(s, a; theta) ~~ Q-table[s, a]. Thay vì nhớ từng dòng của bảng, NN học một hàm có
+khả năng generalize. Nếu 2 state gần giống nhau, NN có thể cho ra Q-value gần giống nhau, còn Q-table 
+lưu thành 2 dòng độc lập.
+
+12. Input của network thường là các vector đặc trưng của dữ liệu thô (e.g. tín hiệu viễn thông -> vector đặc trưng
+gồm nhiều chiều, mỗi chiều đại diện cho một đặc trưng con của trạng thái hiện tại, [strength, frequency,...]).
+Output là Q-value cho từng action RỜI RẠC. e.g. Q_vals = [Q(s, left), Q(s, right), Q(s, up), Q(s, down)]
+-> action = argmax(Q_vals) nếu không có epsilon-greedy.
+
+13. bootstrapping tức là dùng ước lượng reward kỳ vọng của tương lai để update cho hiện tại.
+đây là tên gọi technical cho cái "hidden logic" mà ta hiểu khi nhắc đến Q-learning, đặc biệt là Q-table.
+
+14. trong giai đoạn đầu của quá trình học trong RL, reward dao động mạnh bởi vì ban đầu các network ra quyết định cho agent chưa học được gì cả,
+vì thế, khi từ state này và agent take action nọ, trong giai đoạn đầu khả năng cao agent sẽ luôn đi tới state có reward xấu (tức bị phạt).
+Dần dà từ từ các mạng học được thì các reward nhận được sẽ bắt đầu tăng lên mượt hơn.
+
+15. target Q-value đơn giản là reward (bỏ đi cụm discount_factor * max_Q_next).
+Khi đó, Q_current = learning_rate * (reward - Q_current).
+
+16. vế trước bạn trả lời giúp tôi. vế sau thì, q-learning thuộc model-free.
+
+17. Bellman equation trực giác: giá trị của một quyết định hôm nay sẽ bằng reward nhận ngay bây giờ
+cộng với giá trị tốt nhất có thể đạt được từ trạng thái tiếp theo, có discount.
+VẬY, DQN thực chất không phải là thuật toán hoàn toàn mới. Nó là:
+Q-learning + neural network + replay buffer + target network
+- nn thay cho q-table, replay buffer giúp giảm correlation của dữ liệu theo thời gian, target network giúp
+online network (mạng học liên tục mỗi step) không bị dao động và dễ bị diverge.
+- target network giữ 1 snapshot cũ (e.g. hiện tại target là 5.0), sau vài ngàn steps, online network học để
+tiến target, lúc này target network giữ nguyên, sau đó copy toàn bộ weights từ online -> target.
+- nếu không có target, online hiện tại cho ra 5.0, ở steps sau weights đổi ra target mới là 7.1 ,...., bị diverge hoặc dao động lung tung.
+
+18. quá lớn thì quá trình hội tụ sẽ dao động qua lại các giá trị tối ưu, quá nhỏ thì quá trình hội tụ sẽ
+trở nên lâu hơn hoặc rất lâu.
+
+19. Training: không, đó là lí do ta áp dụng epsilon-greedy.
+Testing: có, vì đó là lúc ta kiểm tra thực lực của agent.
+
+20. Có chắc. Nếu được thì tôi sẽ code trong tối nay, vừa đó song song qua luôn DQN nếu bạn đánh giá tôi đủ điều kiện.

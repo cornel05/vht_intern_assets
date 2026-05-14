@@ -1,0 +1,62 @@
+Được. Mình sẽ kiểm tra theo kiểu “đủ nền để sang DQN chưa”, không hỏi quá lan man. Bạn trả lời ngắn gọn từng câu là được; sau đó mình sẽ chấm mức sẵn sàng và chỉ ra lỗ hổng nếu có. 🧠
+
+Trả lời theo format:
+
+`1. ...`
+`2. ...`
+...
+
+Câu hỏi kiểm tra Tuần 1:
+
+1. Trong Reinforcement Learning, hãy phân biệt rõ 4 khái niệm: **state**, **action**, **reward**, **policy**. Cho ví dụ ngắn nếu agent là robot di chuyển trong mê cung.
+
+2. Mục tiêu tối ưu của agent trong RL là gì? Vì sao agent thường không chỉ tối đa hóa reward tức thời?
+
+3. Hãy giải thích ý nghĩa của discount factor `γ`. Nếu `γ` gần 0 thì agent có xu hướng gì? Nếu `γ` gần 1 thì sao?
+
+4. Q-value `Q(s, a)` biểu diễn điều gì?
+
+5. Viết công thức cập nhật Q-learning dạng cơ bản và giải thích từng thành phần trong công thức.
+
+6. Trong Q-learning, vì sao có thành phần:
+
+`max_a' Q(s', a')`
+
+Nó đang thể hiện ý tưởng gì?
+
+7. Phân biệt **on-policy** và **off-policy**. Q-learning thuộc loại nào? Vì sao?
+
+8. Epsilon-greedy dùng để làm gì? Nếu epsilon quá cao hoặc quá thấp ngay từ đầu thì có vấn đề gì?
+
+9. Phân biệt **exploration** và **exploitation**. Vì sao phải cân bằng hai thứ này?
+
+10. Q-table gặp vấn đề gì khi state space hoặc action space lớn?
+
+11. Theo bạn, vì sao cần dùng neural network trong DQN thay cho Q-table?
+
+12. Nếu dùng neural network để xấp xỉ Q-value, input và output của network trong DQN thường là gì?
+
+13. Bạn hiểu thế nào về khái niệm **bootstrapping** trong Q-learning?
+
+14. Trong quá trình training RL, vì sao reward có thể dao động mạnh, không giảm/lên đều như supervised learning?
+
+15. Giả sử agent chơi game. Có một state `s`, agent chọn action `a`, nhận reward `r`, chuyển sang state `s'`. Nếu `s'` là terminal state thì target Q-value nên tính thế nào?
+
+16. Sự khác nhau giữa **model-free** và **model-based RL** là gì? Q-learning thuộc nhóm nào?
+
+17. Bạn có hiểu Bellman equation ở mức trực giác không? Hãy diễn giải bằng lời, không cần chứng minh toán.
+
+18. Nếu learning rate `α` quá lớn hoặc quá nhỏ thì ảnh hưởng thế nào đến quá trình học?
+
+19. Một policy tốt có nhất thiết luôn chọn action có Q-value cao nhất không? Trả lời trong bối cảnh training và testing.
+
+20. Tự đánh giá: hiện tại bạn có thể tự code Q-learning với Q-table cho một môi trường đơn giản như FrozenLake/GridWorld mà không nhìn lời giải không? Trả lời: “có chắc”, “có nhưng cần tra”, hoặc “chưa”.
+
+Sau khi bạn trả lời, mình sẽ đánh giá theo 4 mức:
+
+`Chưa nên sang DQN`
+`Có thể sang DQN nhưng cần vá nền`
+`Sẵn sàng sang DQN`
+`Sẵn sàng và có thể học nhanh các biến thể DQN`
+
+Tiêu chí chính: bạn không cần thuộc lòng công thức, nhưng phải hiểu chắc Bellman update, exploration–exploitation, off-policy, Q-value, terminal handling, và lý do Q-table không scale được.
