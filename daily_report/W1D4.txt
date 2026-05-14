@@ -1,0 +1,32 @@
+Em chào anh Nam ạ, sorry anh 2-3 bữa nay em không báo cáo hàng ngày cho anh ạ.
+
+Hôm nay em xin báo cáo anh tiến độ sáng giờ ạ:
+
+1. Tìm hiểu và nắm vững về Q-table sử dụng trong thuật toán Q-learning.
+  - Em xin phép trình bày ngắn gọn những gì em hiểu như sau ạ: q-table giúp lưu trữ những cặp state-actions (trong triển khai thì state thường là dòng và action là cột, dùng tensor với shape là num_states x num_actions).
+  - Q-table giúp tìm ra action đem lại giá trị reward mong đợi (sau nhiều steps) tốt nhất ở state hiện tại.
+  - Q-table rất nhanh và chính xác cho những bài toán có state và action space là rời rạc (chẳng hạn state là vị trí ô trong một grid map nào đó, không phải là các giá trị liên tục như torque, velocity,...).
+  - Tuy nhiên, không thể dùng Q-table cho các env có state/action space quá lớn và liên tục, chẳng hạn như env của network simulation (khi states thường là các giá trị tín hiệu liên tục). Vẫn có thể áp dụng Q-table
+    cho các bài toán như thế nếu ta rời rạc hóa state/action space được, tuy nhiên như thế không thể đạt được hiệu quả tối ưu cho agent được, vì đánh mất quá nhiều đặc trưng của dữ liệu.
+
+2. Chạy thử và kiểm chứng thành công thuật toán Q-learning trên môi trường CliffWalking-v1.
+
+3. Hiểu rõ hơn cơ chế cập nhật Q-value cho từng cặp state-action, trong đó agent học dần từ reward nhận được sau mỗi action.
+  - Q-value cho ô hiện tại cập nhật theo công thức: Q_current += learning_rate * (reward + discount_factor * max_Q_next_state - Q_current).
+  - Mỗi lần cập nhật chỉ được phép cập nhật 1 ô. Chính vì thế, Q-table cần rất nhiều iterations để có thể cập nhật được Q-table tương đối ổn định và tối ưu.
+
+4. Quan sát được vai trò của epsilon-greedy trong việc cân bằng giữa exploration và exploitation trong quá trình training.
+  - Để vô tình giúp được agent khôn hơn trong quá trình học, em cho phép mô hình chọn random một action trong action space với một xác suất cực nhỏ nào đó, thay vì cứ nhắm mắt mà chọn action cho Q-value tốt nhất theo
+    policy hiện tại.
+
+5. Rút ra được rằng Q-table phù hợp với môi trường nhỏ, state rời rạc, nhưng sẽ khó mở rộng với các bài toán có state space lớn hoặc liên tục.
+
+Ngày mai và sắp tới em dự định sẽ:
+
+1. Bắt đầu chuyển tiếp sang tìm hiểu Deep Q-Learning/DQN.
+
+2. Tìm hiểu các thành phần chính của DQN như Bellman target, replay buffer và target network.
+
+3. Thử triển khai baseline DQN trên một môi trường nhỏ để so sánh với Q-learning dùng Q-table.
+
+4. Sau đó tiếp tục xem xét hướng áp dụng DQN cho các môi trường phức tạp hơn, đặc biệt là các bài toán mô phỏng có liên quan đến ns3-gym.
